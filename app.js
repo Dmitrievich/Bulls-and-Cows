@@ -7,7 +7,7 @@ const readlineSync = require('readline-sync');
 let numberOfBulls = 0;
 let numberOfCows = 0;
 
-// Random Digit func
+// Random Digit func from 0 to 9
 function rndValue() {
     return Math.floor(Math.random() * 10);
 };
@@ -32,7 +32,7 @@ console.log(secretNumber);
 
 /* Test: Check random vlues:
 while (true) {
-    var a = rndValue();
+    let a = rndValue();
     console.log(a);
     if (a == 9) {
         break;
@@ -40,7 +40,29 @@ while (true) {
 };
 */
 
-let userNumber = readlineSync.question('Guess number: ');
+// Users input:
+function readLn(str) {
+	let userNumber;
+    let state = true;
+    
+    while (state) {
+        userNumber = readlineSync.question(str);
+        
+        if ((typeof parseInt(userNumber)) == 'number') {
+            if ( (userNumber.length == 4) ) {
+                state = false;
+            }
+        }
+       
+       
+       
+    }
+	return userNumber.toString();
+};
+
+
+let userNumber = readLn('Guess the four-digit number: ');
+console.log('User number: ' + userNumber);
 
 function guess() {
     if ( secretNumber == userNumber ) {
@@ -48,15 +70,15 @@ function guess() {
         return 'Win';
     } 
     
-    for (var i = 0; i < 4; i++) {
-        for (var j = 0; j < 4; j++) {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
             if (secretNumber[i] == userNumber[j]) {
                 numberOfCows += 1;
             }
         }
     }
 
-    for (var i = 0; i < 4; i ++) {
+    for (let i = 0; i < 4; i ++) {
         if (secretNumber[i] == userNumber[i]) {
             numberOfCows -= 1;
             numberOfBulls += 1;
