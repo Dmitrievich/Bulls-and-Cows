@@ -4,26 +4,69 @@ const readlineSync = require('readline-sync');
 
 ////////////
 
-var minNumber = parseInt( readlineSync.question('Input min number for rnd value: ') );
-var maxNumber = parseInt( readlineSync.question('Input max number for rnd value: ') );
+let numberOfBulls = 0;
+let numberOfCows = 0;
 
-
+// Random Digit func
 function rndValue() {
-    return Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-}
+    return Math.floor(Math.random() * 10);
+};
 
-var secretNumber = rndValue();
+function generateSecret() {
+    let secretNumber = [rndValue()];
+    let tempNum;
 
-//* Test: Check random vlues:
+    while (secretNumber.length !== 4) {
+        tempNum = rndValue();
+        
+        if (secretNumber.indexOf(tempNum) === -1) {
+            secretNumber.push(tempNum);
+        }
+    }
+    return secretNumber.join('');
+};
 
+let secretNumber = generateSecret();
+console.log(secretNumber);
+
+
+/* Test: Check random vlues:
 while (true) {
     var a = rndValue();
     console.log(a);
-    if (a == minNumber) {
+    if (a == 9) {
         break;
     }
-}
+};
+*/
 
-//*/
+let userNumber = readlineSync.question('Guess number: ');
 
-var userNumber = readlineSync.question('Guess number from ' + minNumber + ' to ' + maxNumber + ': ');
+function guess() {
+    if ( secretNumber == userNumber ) {
+        numberOfBulls = 4;
+        return 'Win';
+    } 
+    
+    for (var i = 0; i < 4; i++) {
+        for (var j = 0; j < 4; j++) {
+            if (secretNumber[i] == userNumber[j]) {
+                numberOfCows += 1;
+            }
+        }
+    }
+
+    for (var i = 0; i < 4; i ++) {
+        if (secretNumber[i] == userNumber[i]) {
+            numberOfCows -= 1;
+            numberOfBulls += 1;
+        }
+    }
+    return 'Try again';
+};
+
+//console.clear();
+console.log(guess()); 
+
+console.log(numberOfBulls); 
+console.log(numberOfCows); 
